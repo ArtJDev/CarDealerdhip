@@ -1,31 +1,28 @@
-public class CarMaker {
-    private final int CREATTIME = 2000;
-    private final Buyer buyer = new Buyer();
+import java.util.List;
 
-    public Car sellCar() {
-        synchronized (buyer) {
-            try {
-                System.out.println(Thread.currentThread().getName() + " зашел в автосалон");
-                while (buyer.getCars().size() == 0) {
-                    System.out.println("Машин нет");
-                    buyer.wait();
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println(Thread.currentThread().getName() + " уехал на новеньком авто");
-            return buyer.getCars().remove(0);
-        }
+public class CarMaker implements Runnable {
+    private final int CREATE_TIME = 1500;
+    private final List<Car> carList;
+
+    public CarMaker(List<Car> carList) {
+        this.carList = carList;
     }
 
-    public synchronized void createCar() {
-        try {
-            System.out.println(Thread.currentThread().getName() + " выпустил 1 авто");
-            Thread.sleep(CREATTIME);
-            buyer.getCars().add(new Car());
-            notify();
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
+    @Override
+    public void run() {
+        synchronized (carList) {
+            try {
+                if (carList.isEmpty()) {
+                    carList.add(new Car());
+                    carList.notify();
+                    Thread.sleep(CREATE_TIME);
+                    System.out.println(Thread.currentThread().getName() + " выпустил 1 авто");
+                } else {
+                    carList.wait();
+                }
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }
