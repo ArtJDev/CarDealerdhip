@@ -13,15 +13,13 @@ public class Buyer implements Runnable {
         synchronized (carList) {
             try {
                 System.out.println(Thread.currentThread().getName() + " зашел в автосалон");
-                Thread.sleep(BUY_TIME);
-                if (carList.isEmpty()) {
+                while (carList.isEmpty()) {
                     System.out.println("Машин нет");
                     carList.wait();
-                } else {
-                    carList.notify();
-                    carList.remove(0);
-                    System.out.println(Thread.currentThread().getName() + " уехал на новеньком авто");
                 }
+                Thread.sleep(BUY_TIME);
+                carList.remove(0);
+                System.out.println(Thread.currentThread().getName() + " уехал на новеньком авто");
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
