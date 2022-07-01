@@ -10,15 +10,16 @@ public class CarMaker implements Runnable {
 
     @Override
     public void run() {
+        Car car = new Car();
         synchronized (carList) {
             try {
-                carList.add(new Car());
                 Thread.sleep(CREATE_TIME);
-                carList.notify();
-                System.out.println(Thread.currentThread().getName() + " выпустил 1 авто");
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
+            carList.add(car);
+            carList.notify();
+            System.out.println(Thread.currentThread().getName() + " выпустил 1 авто");
         }
     }
 }
