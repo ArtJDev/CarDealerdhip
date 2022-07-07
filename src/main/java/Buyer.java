@@ -1,7 +1,7 @@
 import java.util.List;
 
 public class Buyer implements Runnable {
-    private final int BUY_TIME = 1000;
+    static final int BUY_TIME = 1000;
     private final List<Car> carList;
 
     public Buyer(List<Car> carList) {

@@ -1,7 +1,7 @@
 import java.util.List;
 
 public class CarMaker implements Runnable {
-    private final int CREATE_TIME = 1000;
+    static final int CREATE_TIME = 1000;
     private final List<Car> carList;
 
     public CarMaker(List<Car> carList) {
