@@ -1,7 +1,7 @@
 import java.util.List;
 
 public class CarMaker implements Runnable {
-    private final int CREATE_TIME = 1500;
+    private final int CREATE_TIME = 1000;
     private final List<Car> carList;
 
     public CarMaker(List<Car> carList) {
@@ -11,12 +11,12 @@ public class CarMaker implements Runnable {
     @Override
     public void run() {
         Car car = new Car();
+        try {
+            Thread.sleep(CREATE_TIME);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         synchronized (carList) {
-            try {
-                Thread.sleep(CREATE_TIME);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
             carList.add(car);
             carList.notify();
             System.out.println(Thread.currentThread().getName() + " выпустил 1 авто");
